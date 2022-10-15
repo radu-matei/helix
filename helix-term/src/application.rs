@@ -635,28 +635,24 @@ impl Application {
                             use helix_core::diagnostic::Severity;
                             use helix_view::decorations::{TextAnnotation, TextAnnotationKind};
                             use helix_view::graphics::{Color, Style};
-                            let style = Style::default().bg(Color::Gray);
+                            let style = Style::default();
                             doc.push_text_annotations(
                                 "diagnostics",
-                                diagnostics
-                                    .iter()
-                                    .map(|d| TextAnnotation {
-                                        text: d.message.clone().into(),
-                                        style: d
-                                            .severity
-                                            .as_ref()
-                                            .map(|s| match s {
-                                                Severity::Error => style.clone().fg(Color::Red),
-                                                Severity::Warning => {
-                                                    style.clone().fg(Color::Yellow)
-                                                }
-                                                Severity::Info => style.clone().fg(Color::Blue),
-                                                Severity::Hint => style.clone().fg(Color::Green),
-                                            })
-                                            .unwrap_or(style.clone().fg(Color::Yellow)),
-                                        line: d.line,
-                                        kind: TextAnnotationKind::Eol,
-                                    })
+                                diagnostics.iter().map(|d| TextAnnotation {
+                                    text: d.message.clone().into(),
+                                    style: d
+                                        .severity
+                                        .as_ref()
+                                        .map(|s| match s {
+                                            Severity::Error => style.clone().fg(Color::Red),
+                                            Severity::Warning => style.clone().fg(Color::Yellow),
+                                            Severity::Info => style.clone().fg(Color::Blue),
+                                            Severity::Hint => style.clone().fg(Color::Green),
+                                        })
+                                        .unwrap_or(style.clone().fg(Color::Yellow)),
+                                    line: d.line,
+                                    kind: TextAnnotationKind::Eol,
+                                }),
                             );
 
                             doc.set_diagnostics(diagnostics);
